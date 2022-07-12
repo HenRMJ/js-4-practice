@@ -1,28 +1,31 @@
 console.log('Your JS file is linked!');
 
 // Refactor the following function to use a Promise instead
-const studentAsleep = false;
+const studentAsleep = true;
 const studentLearning = true;
 
-function watchInstructorDemo(callback, errCallback) {
-  if (studentAsleep) {
-    errCallback({
-        event: "Student is sleeping.",
+const watchinstructorDemo = () => {
+  return new Promise ((resolve, reject) => {
+    if (studentAsleep) {
+      reject({
+          event: "Student is sleeping.",
+          message: "Instructor needs to be more fun.",
+      });
+    } else if (studentLearning === false) {
+      reject({
+        event: "Student is not learning.",
         message: "Instructor needs to be more fun.",
-    });
-  } else if (studentLearning === false) {
-    errCallback({
-      event: "Student is not learning.",
-      message: "Instructor needs to be more fun.",
-    });
-  } else {
-    callback("We are all totally getting this!");
-  }
+      });
+    } else {
+      resolve("We are all totally getting this!");
+    }
+  })
 }
 
+const functionSuccess = (message) => {
+  console.log(message);
+}
 
-watchInstructorDemo((message) => {
-    console.log(message);
-}, (error) => {
-    console.log(error.event + ' ' + error.message);
-})
+watchinstructorDemo()
+  .then(functionSuccess)
+  .catch((error) => console.log(error.message))
